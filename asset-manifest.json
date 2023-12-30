@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/YaroslavGHT-goit-react-hw-03-image-finder/static/css/main.7acaea2f.css",
+    "main.js": "/YaroslavGHT-goit-react-hw-03-image-finder/static/js/main.07d3183d.js",
+    "index.html": "/YaroslavGHT-goit-react-hw-03-image-finder/index.html",
+    "main.7acaea2f.css.map": "/YaroslavGHT-goit-react-hw-03-image-finder/static/css/main.7acaea2f.css.map",
+    "main.07d3183d.js.map": "/YaroslavGHT-goit-react-hw-03-image-finder/static/js/main.07d3183d.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.7acaea2f.css",
+    "static/js/main.07d3183d.js"
+  ]
+}
