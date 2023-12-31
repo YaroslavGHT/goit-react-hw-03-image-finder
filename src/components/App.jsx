@@ -15,7 +15,7 @@ export class App extends Component {
     loading: false,
     loadingMore: false,
     isOpenModal: false,
-    modalData: ''
+    modalImg: ''
   };
 
   fetchPostsByQuery = async (page, search) => {
@@ -35,21 +35,11 @@ export class App extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (
-      this.state.search !== prevState.search || this.state.page !== prevState.page
-    ) {
-      this.fetchPostsByQuery(this.state.page, this.state.search);
-    }
-    if (this.state.isOpenModal === true) {
-      window.addEventListener("keydown", this.handleKeyPress)
-    }
-  }
-
-  componentWillUnmount() {
-    if (this.state.isOpenModal === false) {
-      window.removeEventListener("keydown", this.handleKeyPress)
-    }
-  }
+    if (this.state.search !== prevState.search || this.state.page !== prevState.page) {
+      if (this.state.search.match(/[a-zA-Zа-яА-Я0-9]/)) {
+        this.fetchPostsByQuery(this.state.page, this.state.search);
+    }}
+  };
   
   handleSubmit = e => {
     e.preventDefault();
@@ -57,18 +47,14 @@ export class App extends Component {
     this.setState({ search: searchValue, pictures: [], page: 1 });
   };
 
-  handleNextPage = () => {
-    const nextPage = this.state.page + 1;
-    this.setState({ page: nextPage })
+  handleNextPage  = () => {
+    this.setState(prevState => ({ page: prevState.page + 1 }));
   };
 
-  handleShowLargeImg = pictureId => {
-    const selectedProfile = this.state.pictures.find(
-      picture => picture.id === pictureId
-    );
+  handleShowLargeImg = (largeImg) => {
     this.setState({
       isOpenModal: true,
-      modalData: selectedProfile,
+      modalImg: largeImg
     });
   };
 
@@ -76,15 +62,7 @@ export class App extends Component {
     this.setState({ isOpenModal: false });
   };
 
-  handleKeyPress = (event) => {
-    if(event.code === "Escape") {
-      this.handleCloseLargeImg();
-    }
-  }
-
   render() {
-    // console.log(this.handleShowLargeImg())
-    // console.log(this.state.pictures)
     const morePictures = this.state.total >= this.state.page*12
     return (
       <div>
@@ -99,7 +77,7 @@ export class App extends Component {
           handleNextPage={this.handleNextPage}
         />}       
         {this.state.isOpenModal === true && <Modal
-          modalData={this.state.modalData}
+          modalImg={this.state.modalImg}
           handleCloseLargeImg={this.handleCloseLargeImg}
           isOpenModal={this.state.isOpenModal}
         />} 

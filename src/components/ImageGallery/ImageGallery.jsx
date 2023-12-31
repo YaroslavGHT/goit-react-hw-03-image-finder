@@ -21,6 +21,7 @@ const ImageGallery = ({pictures, handleShowLargeImg}) => {
                     key={picture.id}
                     id={picture.id}
                     urlImeg={picture.webformatURL}
+                    largeImageURL={picture.largeImageURL}
                     tag={picture.tags}
                     handleShowLargeImg={handleShowLargeImg}
                   />
