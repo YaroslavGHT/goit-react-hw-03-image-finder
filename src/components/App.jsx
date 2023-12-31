@@ -23,15 +23,6 @@ export class App extends Component {
       this.setState({ loading: true });
       const pic = await requesImageSearch(this.state.page, this.state.search);
       const { total, hits } = pic;
-      // this.setState(prevState => {
-      //   const uniqueHits = hits.filter(hit => !prevState.pictures.some(picture => picture.id === hit.id));
-      //   return {
-      //     pictures: [...prevState.pictures, ...uniqueHits],
-      //     total: total,
-      //     loading: false,
-      //     loadingMore: false
-      //   };
-      // });
       this.setState(prevState => ({
         pictures: [...prevState.pictures, ...hits], 
         total: total,
@@ -59,19 +50,6 @@ export class App extends Component {
       window.removeEventListener("keydown", this.handleKeyPress)
     }
   }
-
-
-  handleKeyPress = (event) => {
-    if(event.code === "Escape") {
-      this.handleCloseLargeImg();
-    }
-  }
-
-  // componentDidUpdate () {
-  //   if (this.state.isOpenModal === true) {
-  //     window.addEventListener("keydown", this.handleKeyPress)
-  //   }
-  // }
   
   handleSubmit = e => {
     e.preventDefault();
@@ -98,6 +76,12 @@ export class App extends Component {
     this.setState({ isOpenModal: false });
   };
 
+  handleKeyPress = (event) => {
+    if(event.code === "Escape") {
+      this.handleCloseLargeImg();
+    }
+  }
+
   render() {
     // console.log(this.handleShowLargeImg())
     // console.log(this.state.pictures)
@@ -117,6 +101,7 @@ export class App extends Component {
         {this.state.isOpenModal === true && <Modal
           modalData={this.state.modalData}
           handleCloseLargeImg={this.handleCloseLargeImg}
+          isOpenModal={this.state.isOpenModal}
         />} 
       </div>
     );

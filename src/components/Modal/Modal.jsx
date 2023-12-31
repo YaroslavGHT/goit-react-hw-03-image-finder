@@ -1,14 +1,22 @@
-import React from 'react';
+import React, { Component } from 'react';
 import css from './Modal.module.css'
 
-const Modal = ({modalData, handleCloseLargeImg}) => {
-  return (
-    <div className={css.overlay} onClick={() => handleCloseLargeImg()}>
-        <div className={css.modal}>
-        <img src={modalData.largeImageURL} alt={modalData.tags} />
+export class Modal extends Component{
+  handleOverlayClick = (event) => {
+    if(event.target === event.currentTarget) {
+      this.props.handleCloseLargeImg();
+    }
+  }
+
+  render() {
+    return (
+        <div className={css.overlay} onClick={this.handleOverlayClick}>
+            <div className={css.modal}>
+              <img src={this.props.modalData.largeImageURL} alt={this.props.modalData.tags} />
+            </div>
         </div>
-    </div>
-  );
+    );
+  }
 };
 
-export { Modal };
+

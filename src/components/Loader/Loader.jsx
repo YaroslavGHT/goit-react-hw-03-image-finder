@@ -3,7 +3,7 @@ import { Audio } from 'react-loader-spinner';
 
 export const Loader = () => {
   return (
-    <div>
+    <div style={{display:'flex', justifyContent:'center', alignItems:'center'}}>
       <Audio
         height="80"
         width="80"
