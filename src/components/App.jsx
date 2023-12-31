@@ -10,17 +10,18 @@ export class App extends Component {
   state = {
     pictures: [],
     page: 1,
-    key: '40634472-56a7999d13afd9c7f5d079b0e',
     search: '',
     total: 0,
     loading: false,
-    loadingMore: false
+    loadingMore: false,
+    isOpenModal: false,
+    modalData: ''
   };
 
-  fetchPostsByQuery = async (page, key, search) => {
+  fetchPostsByQuery = async (page, search) => {
     try {
       this.setState({ loading: true });
-      const pic = await requesImageSearch(this.state.page, this.state.key, this.state.search);
+      const pic = await requesImageSearch(this.state.page, this.state.search);
       const { total, hits } = pic;
       // this.setState(prevState => {
       //   const uniqueHits = hits.filter(hit => !prevState.pictures.some(picture => picture.id === hit.id));
@@ -46,27 +47,60 @@ export class App extends Component {
     if (
       this.state.search !== prevState.search || this.state.page !== prevState.page
     ) {
-      this.fetchPostsByQuery(this.state.page, this.state.key, this.state.search);
+      this.fetchPostsByQuery(this.state.page, this.state.search);
+    }
+    if (this.state.isOpenModal === true) {
+      window.addEventListener("keydown", this.handleKeyPress)
     }
   }
+
+  componentWillUnmount() {
+    if (this.state.isOpenModal === false) {
+      window.removeEventListener("keydown", this.handleKeyPress)
+    }
+  }
+
+
+  handleKeyPress = (event) => {
+    if(event.code === "Escape") {
+      this.handleCloseLargeImg();
+    }
+  }
+
+  // componentDidUpdate () {
+  //   if (this.state.isOpenModal === true) {
+  //     window.addEventListener("keydown", this.handleKeyPress)
+  //   }
+  // }
   
   handleSubmit = e => {
     e.preventDefault();
     const searchValue = e.currentTarget.elements.searchInput.value;
-    this.setState({ search: searchValue });
-    this.setState({ pictures: [], page: 1})
+    this.setState({ search: searchValue, pictures: [], page: 1 });
   };
 
   handleNextPage = () => {
     const nextPage = this.state.page + 1;
     this.setState({ page: nextPage })
-      // , () => {
-      // this.fetchPostsByQuery(nextPage, this.state.key, this.state.search);
-    // });
+  };
+
+  handleShowLargeImg = pictureId => {
+    const selectedProfile = this.state.pictures.find(
+      picture => picture.id === pictureId
+    );
+    this.setState({
+      isOpenModal: true,
+      modalData: selectedProfile,
+    });
+  };
+
+  handleCloseLargeImg = () => {
+    this.setState({ isOpenModal: false });
   };
 
   render() {
-    console.log(this.state.pictures)
+    // console.log(this.handleShowLargeImg())
+    // console.log(this.state.pictures)
     const morePictures = this.state.total >= this.state.page*12
     return (
       <div>
@@ -74,11 +108,16 @@ export class App extends Component {
           handleSubmit={this.handleSubmit}
         />
         {this.state.loading === true && <Loader />}
-        <ImageGallery pictures={this.state.pictures}/>
+        <ImageGallery
+          handleShowLargeImg={this.handleShowLargeImg}
+          pictures={this.state.pictures} />
         {morePictures === true && <Button
           handleNextPage={this.handleNextPage}
         />}       
-        {/* <Modal/> */}
+        {this.state.isOpenModal === true && <Modal
+          modalData={this.state.modalData}
+          handleCloseLargeImg={this.handleCloseLargeImg}
+        />} 
       </div>
     );
   }

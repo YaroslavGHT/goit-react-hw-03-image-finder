@@ -1,9 +1,10 @@
 import React from 'react';
 import {ImageGalleryItem} from '../ImageGalleryItem/ImageGalleryItem.jsx'
 
-const ImageGallery = ({pictures}) => {
+const ImageGallery = ({pictures, handleShowLargeImg}) => {
   return (
-        <ul style={{
+      <ul 
+            style={{
             display: 'grid',
             maxWidth: 'calc(100vw - 48px)',
             gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
@@ -21,6 +22,7 @@ const ImageGallery = ({pictures}) => {
                     id={picture.id}
                     urlImeg={picture.webformatURL}
                     tag={picture.tags}
+                    handleShowLargeImg={handleShowLargeImg}
                   />
                 ))}
         </ul>
